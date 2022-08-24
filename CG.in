@@ -1,0 +1,35 @@
+units real
+atom_style full
+dimension 3
+# turns netwon 3rd law on/off
+newton on 
+#set boundaries in x y z
+boundary p p p
+read_data data.in
+pair_style table spline 2500
+pair_coeff * * nb.table VOTCA 10.0
+ 
+
+#run parameter
+timestep 2
+run_style verlet
+
+
+#dump h5md1 all h5md 10 dump.h5 position velocity image force
+
+fix 1 all langevin 298.0 298.0 2000.0 82885
+fix 2 all nve
+thermo 500
+
+run 10000
+unfix 1
+unfix 2
+fix 1 all gle 12  298 298 82885 Amatrix
+
+run 10000
+
+dump h5md1 all h5md 1 dump.h5 position velocity image force
+run      6000
+
+
+write_data data.out nofix
