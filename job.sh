@@ -10,6 +10,7 @@ cp ../data.in .
 cp ../nb.table .
 cp ../it${i}_mem_fit/Amatrix .
 
+#here you might want to change the executable or choose parallelization options
 lmp -i CG.in
 python ../vacf.py dump.h5 ./ 
 
